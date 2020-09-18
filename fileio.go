@@ -32,7 +32,7 @@ func SaveFile(pos string) *os.File {
 
 func SaveStructAsJson(file *os.File, a ...interface{}) {
 	data, _ := json.Marshal(a)
-	fmt.Fprint(file, data)
+	fmt.Fprint(file, string(data))
 
 }
 
