@@ -2,6 +2,7 @@ package common_utils
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -29,6 +30,12 @@ func SaveFile(pos string) *os.File {
 	return sav
 }
 
+func SaveStructAsJson(file *os.File, a ...interface{}) {
+	data, _ := json.Marshal(a)
+	fmt.Fprint(file, data)
+
+}
+
 func ReadLine(reader *bufio.Reader) (string, bool) {
 	s, err := reader.ReadString('\n')
 	if err == io.EOF {
@@ -49,9 +56,9 @@ func SaveLine(f *os.File, a ...interface{}) {
 	}
 }
 
-func SaveLineEx(f *os.File, a Line) {
-	SaveLine(f, a.ToString())
-}
+//func SaveLineEx(f *os.File, a Line) {
+//	SaveLine(f, a.ToString())
+//}
 
 func SaveXsvLine(f *os.File, sep string, a ...interface{}) {
 	as := []string{}

@@ -6,6 +6,7 @@ import (
 )
 
 type Task func()
+type Task1 func(int)
 
 func RunTasks(tasks ...Task) {
 	wg := sync.WaitGroup{}
@@ -17,6 +18,17 @@ func RunTasks(tasks ...Task) {
 		}(v)
 	}
 	wg.Wait()
+}
+
+func RunTasksWithWorker(workerNum, maxIterations int, task Task1) {
+	guard := make(chan struct{}, workerNum)
+	for i := 0; i < maxIterations; i++ {
+		guard <- struct{}{} // would block if guard channel is already filled
+		go func(n int) {
+			task(n)
+			<-guard
+		}(i)
+	}
 }
 
 const RAND_MAX = 10000
