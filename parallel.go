@@ -20,15 +20,31 @@ func RunTasks(tasks ...Task) {
 	wg.Wait()
 }
 
+func RunTaskFor(maxIterations int, task Task1) {
+	wg := sync.WaitGroup{}
+	wg.Add(maxIterations)
+	for i := 0; i < maxIterations; i++ {
+		go func(n int) {
+			task(n)
+			wg.Done()
+		}(i)
+	}
+	wg.Wait()
+}
+
 func RunTasksWithWorker(workerNum, maxIterations int, task Task1) {
 	guard := make(chan struct{}, workerNum)
+	wg := sync.WaitGroup{}
+	wg.Add(maxIterations)
 	for i := 0; i < maxIterations; i++ {
 		guard <- struct{}{} // would block if guard channel is already filled
 		go func(n int) {
 			task(n)
 			<-guard
+			wg.Done()
 		}(i)
 	}
+	wg.Wait()
 }
 
 const RAND_MAX = 10000

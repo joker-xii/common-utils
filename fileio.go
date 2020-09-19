@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"strings"
 )
@@ -148,4 +149,13 @@ func IsLowerAlpha(r byte) bool {
 }
 func IsUpperAlpha(r byte) bool {
 	return r <= 'Z' && r >= 'A'
+}
+
+func ListFileNames(path string) []string {
+	files, _ := ioutil.ReadDir(path)
+	ret := []string{}
+	for _, v := range files {
+		ret = append(ret, path+v.Name())
+	}
+	return ret
 }
