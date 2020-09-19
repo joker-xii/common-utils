@@ -1,7 +1,6 @@
 package common_utils
 
 import (
-	"math/rand"
 	"sync"
 )
 
@@ -45,16 +44,4 @@ func RunTasksWithWorker(workerNum, maxIterations int, task Task1) {
 		}(i)
 	}
 	wg.Wait()
-}
-
-const RAND_MAX = 10000
-
-func RandomSwitch(p int) bool {
-	if p == 0 {
-		return false
-	} else if p == RAND_MAX {
-		return true
-	}
-
-	return rand.Int()%RAND_MAX < p
 }

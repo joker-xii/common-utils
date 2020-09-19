@@ -38,14 +38,11 @@ func SaveStructAsJson(file *os.File, a ...interface{}) {
 }
 func ReadAll(path string) string {
 	file := OpenFile(path)
-	all := ""
-	for ; ; {
-		s, b := ReadLine(file)
-		if !b {
-			return all
-		}
-		all += s
+	all, err := ioutil.ReadAll(file)
+	if err != nil {
+		panic(err)
 	}
+	return string(all)
 }
 func ReadLine(reader *bufio.Reader) (string, bool) {
 	s, err := reader.ReadString('\n')
